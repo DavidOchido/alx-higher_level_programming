@@ -1,7 +1,3 @@
-#ifndef LISTS_H
-#define LISTS_H
-
-#include <stdlib.h>
 #include "lists.h"
 
 /**
@@ -36,9 +32,8 @@ listint_t *insert_node(listint_t **head, int number)
         current = current->next;
     }
 
-    new_node->next = current;
     prev->next = new_node;
+    new_node->next = current;
 
     return (new_node);
 }
-
