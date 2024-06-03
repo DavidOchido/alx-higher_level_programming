@@ -1,44 +1,61 @@
+#ifndef LISTS_H
+#define LISTS_H
+
 #include <stdlib.h>
+
+/**
+ * struct listint_s - singly linked list
+ * @n: integer
+ * @next: points to the next node
+ *
+ * Description: singly linked list node structure
+ */
+typedef struct listint_s
+{
+    int n;
+    struct listint_s *next;
+} listint_t;
+
+listint_t *insert_node(listint_t **head, int number);
+
+#endif /* LISTS_H */
 #include "lists.h"
 
 /**
- * *insert_node - inserts a number into a sorted singly linked list
- * @head: pointer to address of head of list
- * @number: integer to be include in new node
- * Return: address of new node, or NULL if it failed
+ * insert_node - Inserts a number into a sorted singly linked list.
+ * @head: Double pointer to the head of the list.
+ * @number: The number to be inserted.
+ *
+ * Return: The address of the new node, or NULL if it failed.
  */
 listint_t *insert_node(listint_t **head, int number)
 {
-	listint_t *newnode, *temp;
+    listint_t *new_node, *current, *prev;
 
-	newnode = malloc(sizeof(listint_t));
-	if (newnode == NULL)
-		return (NULL);
-	if (*head == NULL)
-	{
-		newnode->n = number;
-		newnode->next = *head;
-		*head = newnode;
-		return (newnode);
-	}
-	else if (number <= (*head)->n)
-	{
-		newnode->n = number;
-		newnode->next = *head;
-		*head = newnode;
-		return (newnode);
-	}
-	else
-	{
-		temp = *head;
-		while (temp->next != NULL && number > temp->next->n)
-		{
-			temp = temp->next;
-		}
-		newnode->n = number;
-		newnode->next = temp->next;
-		temp->next = newnode;
-		return (newnode);
-	}
-	return (NULL);
+    new_node = malloc(sizeof(listint_t));
+    if (new_node == NULL)
+        return (NULL);
+
+    new_node->n = number;
+    new_node->next = NULL;
+
+    if (*head == NULL || (*head)->n >= number)
+    {
+        new_node->next = *head;
+        *head = new_node;
+        return (new_node);
+    }
+
+    current = *head;
+    while (current != NULL && current->n < number)
+    {
+        prev = current;
+        current = current->next;
+    }
+
+    new_node->next = current;
+    prev->next = new_node;
+
+    return (new_node);
 }
+
